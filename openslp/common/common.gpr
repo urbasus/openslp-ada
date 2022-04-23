@@ -1,0 +1,18 @@
+project Common is
+
+   for Languages use ("C");
+
+   SLP_Version := external ("SLP_Version", """0.0.0""");
+
+   package Compiler is
+      -- switches for MinGW build
+      for Switches ("c") use ("-DSLP_VERSION=" & SLP_Version);
+   end Compiler;
+
+   for Library_Name use "common";
+   for Object_Dir use "obj";
+   for Library_Dir use "lib";
+   for Library_Kind use "static";
+
+end Common;
+

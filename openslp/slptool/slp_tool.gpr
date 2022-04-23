@@ -1,0 +1,23 @@
+with "..\libslp\slp.gpr";
+
+project SLP_Tool is
+
+   for Languages use ("C");
+   for Object_Dir use "obj";
+   for Exec_Dir use "bin";
+   for Main use ("slptool.c");
+
+   SLP_Version := external ("SLP_Version", """0.0.0""");
+
+   package Compiler is
+      -- switches for MinGW build
+      for Switches ("c") use ("-DSLP_VERSION=" & SLP_Version);
+   end Compiler;
+
+   package Linker is
+      -- switches for MinGW build
+      for Switches ("c") use ("-lws2_32", "-liphlpapi");
+   end Linker;
+
+end SLP_Tool;
+

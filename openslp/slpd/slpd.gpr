@@ -1,0 +1,75 @@
+with "..\libslp\slp.gpr";
+with "..\libslpattr\slp_attr.gpr";
+
+project SLPD is
+
+   for Languages use ("C");
+   for Object_Dir use "obj";
+   for Exec_Dir use "bin";
+   for Main use ("slpd_main.c");
+
+   type Bool is ("0", "1");
+
+   -- Scenarios
+
+   -- Version format is "MAJOR.MINOR.PATCH"
+   SLP_Version := external ("SLP_Version", """0.0.0""");
+
+   -- Predicates
+   Enable_Predicates : Bool := external ("Enable_Predicates", "0");
+   Predicate_Impl := ();
+   case Enable_Predicates is
+      when "0" =>
+         Predicate_Impl := ();
+      when "1" =>
+         Predicate_Impl := ("slpd_predicate.c");
+   end case;
+
+   -- SLPv1
+   Enable_SLPv1 : Bool := external ("Enable_SLPv1", "0");
+   SLPv1_Impl := ();
+   case Enable_SLPv1 is
+      when "0" =>
+         SLPv1_Impl := ();
+      when "1" =>
+         SLPv1_Impl := ("slpd_v1process.c");
+   end case;
+
+   -- SLPv2 Security
+   Enable_SLPv2_Security : Bool := external ("Enable_SLPv2_Security", "0");
+   SLPv2_Security_Impl := ();
+   case Enable_SLPv2_Security is
+      when "0" =>
+         SLPv2_Security_Impl := ();
+      when "1" =>
+         SLPv2_Security_Impl := ("slpd_spi.c");
+   end case;
+
+   -- WinMain
+   Enable_WinMain : Bool := external ("Enable_WinMain", "1");
+   WinMain_Impl := ();
+   case Enable_WinMain is
+      when "0" =>
+         WinMain_Impl := ();
+      when "1" =>
+         WinMain_Impl := ("slpd_win32.c");
+   end case;
+
+   for Source_Files use ("slpd_cmdline.c", "slpd_database.c", "slpd_incoming.c", "slpd_index.c", "slpd_knownda.c", "slpd_log.c", "slpd_main.c", "slpd_outgoing.c", "slpd_process.c", "slpd_property.c", "slpd_regfile.c", "slpd_socket.c")
+     & Predicate_Impl
+     & SLPv1_Impl
+     & SLPv2_Security_Impl
+     & WinMain_Impl;
+
+   -- Note:
+   package Compiler is
+      -- switches for MinGW build
+      for Switches ("c") use ("-DSLP_VERSION=" & SLP_Version);
+   end Compiler;
+
+   package Linker is
+      -- switches for MinGW build
+      for Switches ("c") use ("-lws2_32", "-liphlpapi");
+   end Linker;
+
+end SLPD;
