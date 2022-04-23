@@ -2,6 +2,7 @@
 .codelite
 .project
 .settings
+.clangd
 OpenSLP.workspace
 openslp/win32/.*x64
 openslp/win32/.*Win32
@@ -9,10 +10,16 @@ Makefile
 Makefile.in
 .deps
 .libs
+obj
+bin
+lib
 
 syntax: glob
 *~
 *.o
+*.d
+*.stdout
+*.stderr
 *.lo
 *.la
 *.a
