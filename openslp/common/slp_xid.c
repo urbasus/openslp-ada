@@ -56,7 +56,7 @@ static uint16_t G_Xid = 0;
  */
 void SLPXidSeed(void)
 {
-   /* Psuedo random number generation without side-effects */
+   /* Prior use of srand/rand had side-effects. */
    const uint32_t PRIME = 17977;
    G_Xid = (uint16_t)(SLPPidGet() * clock() * PRIME);
 }
