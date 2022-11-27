@@ -1,1 +1,7 @@
+# mercurial
 .hg
+
+# gpr output directories
+lib
+obj
+bin
