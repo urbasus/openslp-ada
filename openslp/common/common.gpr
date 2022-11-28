@@ -1,6 +1,6 @@
 project Common is
 
-   for Languages use ("C");
+   for Languages use ("C", "Ada");
 
    SLP_Version := external ("SLP_Version", """0.0.0""");
 
@@ -27,6 +27,7 @@ project Common is
                          "slp_crypto.h",
                          "slp_database.c",
                          "slp_database.h",
+                         -- slp_debug not used in test
                          "slp_debug.c",
                          "slp_debug.h",
                          "slp_dhcp.c",
@@ -44,8 +45,11 @@ project Common is
                          "slp_network.h",
                          "slp_parse.c",
                          "slp_parse.h",
-                         "slp_pid.c",
+                         -- pid rewritten in Ada
+                         --"slp_pid.c",
                          "slp_pid.h",
+                         "pid.adb",
+                         "pid.ads",
                          "slp_predicate.c",
                          "slp_predicate.h",
                          "slp_property.c",
